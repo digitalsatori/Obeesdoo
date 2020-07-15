@@ -70,10 +70,10 @@ class Partner(models.Model):
     @api.depends("cooperator_type")
     def _compute_is_worker(self):
         for rec in self:
-            rec.is_worker = rec.cooperator_type == "share_b"
+            rec.is_worker = rec.cooperator_type == "share_b" or rec.cooperator_type == "share_a"
 
     def _search_is_worker(self, operator, value):
         if (operator == "=" and value) or (operator == "!=" and not value):
-            return [("cooperator_type", "=", "share_b")]
+            return ["|",("cooperator_type", "=", "share_b"),("cooperator_type", "=", "share_a")]
         else:
-            return [("cooperator_type", "!=", "share_b")]
+            return [("cooperator_type", "!=", "share_b"),("cooperator_type", "!=", "share_a")]

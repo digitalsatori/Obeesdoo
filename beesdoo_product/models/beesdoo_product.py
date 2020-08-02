@@ -27,6 +27,13 @@ class BeesdooProduct(models.Model):
         "beesdoo.product.label", domain=[("type", "=", "delivery")]
     )
 
+    fds_label = fields.Many2one(
+        "beesdoo.product.hazard", string="FDS label", domain=[("type", "=", "fds")], translate=True
+    )
+    hazard_label = fields.Many2one(
+        "beesdoo.product.hazard", string="Hazard label", domain=[("type", "=", "hazard")], translate=True
+    )
+
     main_seller_id = fields.Many2one(
         "res.partner",
         string="Main Seller",
@@ -274,6 +281,20 @@ class BeesdooScaleCategory(models.Model):
             "The code of the scale category must be unique !",
         )
     ]
+
+
+class BeesdooProductHazard(models.Model):
+    _name = "beesdoo.product.hazard"
+    _description = "beesdoo.product.hazard"
+
+    name = fields.Char()
+    type = fields.Selection(
+        [
+            ("fds", "FDS"),
+            ("hazard", "Specific hazard"),
+        ]
+    )
+    active = fields.Boolean(default=True)
 
 
 class BeesdooProductLabel(models.Model):
